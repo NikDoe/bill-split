@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./components/Button";
 import FriendsList from "./components/FriendsList";
+import FormAddFriends from "./components/FormAddFriends";
 
 const initialFriends = [
 	{
@@ -21,21 +22,32 @@ const initialFriends = [
 		image: "https://i.pravatar.cc/48?u=499476",
 		balance: 0,
 	},
-];  
+];
+
+export type TFriend = typeof initialFriends[number];
 
 const App = function () {
+	const [friends, setFriends] = useState<TFriend[]>(initialFriends);
 	const [isOpenFriendForm, setIsOpenFriendForm] = useState(false);
 
 	const handleOpenAddFriendForm = () => {
 		setIsOpenFriendForm(prevState => !prevState);
 	};
 
+	const friendsForm = (
+		<FormAddFriends
+			setFriends={setFriends}
+			setIsOpenFriendForm={setIsOpenFriendForm}
+		/>
+	);
+
 	return (
 		<div className="app">
 			<div className="sidebar">
 				<FriendsList
-					friends={initialFriends} 
+					friends={friends} 
 				/>
+				{isOpenFriendForm && friendsForm}
 				<Button 
 					onClick={handleOpenAddFriendForm}
 				>

@@ -2,7 +2,7 @@ import { FC, ReactNode } from "react";
 
 type ButtonProps = {
     children: ReactNode | ReactNode[];
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 const Button: FC<ButtonProps> = function (props) {

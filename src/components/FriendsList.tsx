@@ -1,12 +1,6 @@
 import { FC, useState } from "react";
 import FriendItem from "./FriendItem";
-
-export type TFriend = {
-    id: number;
-	name: string;
-	image: string;
-	balance: number;
-}
+import { TFriend } from "../App";
 
 type FriendsListProps = {
     friends: TFriend[];
