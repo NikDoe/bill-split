@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import FriendItem from "./FriendItem";
 
-type TFriend = {
+export type TFriend = {
     id: number;
 	name: string;
 	image: string;
@@ -16,18 +17,19 @@ const FriendsList: FC<FriendsListProps> = function (props) {
 		friends
 	} = props;
 
+	const [currentFriendId, setCurrentFriendId] = useState<null | number>(null);
+
 	return (
 		<ul>
 			{
 				friends.map(
 					friend => (
-						<li
+						<FriendItem
 							key={friend.id}
-						>
-							<img src={friend.image} alt={friend.name} />
-							<h3>{friend.name}</h3>
-							<p>баланс</p>
-						</li>
+							friend={friend}
+							currentFriendId={currentFriendId}
+							setCurrentFriendId={setCurrentFriendId}
+						/>
 					)
 				)
 			}
