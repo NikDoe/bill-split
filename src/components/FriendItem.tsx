@@ -1,5 +1,6 @@
 import { Dispatch, FC, SetStateAction } from "react";
 import { TFriend } from "./FriendsList";
+import Button from "./Button";
 
 type FriendItemProps = {
     friend: TFriend;
@@ -42,12 +43,11 @@ const FriendItem: FC<FriendItemProps> = function (props) {
 			<img src={image} alt={name} />
 			<h3>{name}</h3>
 			{balanceElement}
-			<button
-				className="button"
+			<Button
 				onClick={handleClick}
 			>
 				{isSelect ? "Закрыть" : "Выбрать"}
-			</button>
+			</Button>
 		</li>
 	);
 };

@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Button from "./components/Button";
 import FriendsList from "./components/FriendsList";
 
 const initialFriends = [
@@ -22,12 +24,23 @@ const initialFriends = [
 ];  
 
 const App = function () {
+	const [isOpenFriendForm, setIsOpenFriendForm] = useState(false);
+
+	const handleOpenAddFriendForm = () => {
+		setIsOpenFriendForm(prevState => !prevState);
+	};
+
 	return (
 		<div className="app">
 			<div className="sidebar">
 				<FriendsList
 					friends={initialFriends} 
 				/>
+				<Button 
+					onClick={handleOpenAddFriendForm}
+				>
+					{isOpenFriendForm ? "Закрыть форму" : "Добавить друга"}
+				</Button>
 			</div>
 		</div>
 	);
