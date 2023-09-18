@@ -1,11 +1,10 @@
-import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import Form from "./Form";
 import Button from "./Button";
 import { TFriend } from "../App";
 
 type FormAddFriendsProps = {
-	setFriends: Dispatch<SetStateAction<TFriend[]>>;
-	setIsOpenFriendForm: Dispatch<SetStateAction<boolean>>;
+	onAddFriend: (newFriend: TFriend) => void;
 }
 
 const initialFormData = {
@@ -15,8 +14,7 @@ const initialFormData = {
 
 const FormAddFriends: FC<FormAddFriendsProps> = (props) => {
 	const {
-		setFriends,
-		setIsOpenFriendForm
+		onAddFriend
 	} = props;
 
 	const [formData, setFormData] = useState(initialFormData);
@@ -35,9 +33,8 @@ const FormAddFriends: FC<FormAddFriendsProps> = (props) => {
 			name: friendName
 		};
 
-		setFriends(prevState => [...prevState, newFriend]);
+		onAddFriend(newFriend);
 		setFormData(initialFormData);
-		setIsOpenFriendForm(false);
 	};
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

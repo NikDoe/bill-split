@@ -1,18 +1,18 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import FriendItem from "./FriendItem";
 import { TFriend } from "../App";
 
 type FriendsListProps = {
     friends: TFriend[];
-	currentFriendId: null | number;
-	setCurrentFriendId: Dispatch<SetStateAction<null | number>>;
+	currentFriend: null | TFriend;
+	onSelect: (friend: TFriend) => void;
 }
 
 const FriendsList: FC<FriendsListProps> = function (props) {
 	const {
 		friends,
-		currentFriendId,
-		setCurrentFriendId,
+		currentFriend,
+		onSelect,
 	} = props;
 
 	return (
@@ -23,8 +23,8 @@ const FriendsList: FC<FriendsListProps> = function (props) {
 						<FriendItem
 							key={friend.id}
 							friend={friend}
-							currentFriendId={currentFriendId}
-							setCurrentFriendId={setCurrentFriendId}
+							currentFriend={currentFriend}
+							onSelect={onSelect}
 						/>
 					)
 				)

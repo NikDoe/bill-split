@@ -30,44 +30,72 @@ export type TFriend = typeof initialFriends[number];
 const App = function () {
 	const [friends, setFriends] = useState<TFriend[]>(initialFriends);
 	const [isOpenFriendForm, setIsOpenFriendForm] = useState(false);
-	const [currentFriendId, setCurrentFriendId] = useState<null | number>(null);
+	const [currentFriend, setCurrentFriend] = useState<null | TFriend>(null);
 
-	const handleOpenAddFriendForm = () => {
+	const handleOpenAddForm = () => {
 		setIsOpenFriendForm(prevState => !prevState);
 	};
 
+	const handleAddFriend = (newFriend: TFriend) => {
+		setFriends(currFriends => [...currFriends, newFriend]);
+		setIsOpenFriendForm(false);
+	};
+
+	const handleSelectFriend = (friend: TFriend) => {
+		setCurrentFriend(
+			currFriend => currFriend?.id === friend.id ? null : friend
+		);
+	};
+
+	const handleSplitBill = (friendExpense: number) => {
+		setFriends(currFriends => 
+			currFriends.map(friend => 
+				friend.id === currentFriend?.id
+					? { ...friend , balance: friend.balance + friendExpense }
+					: friend
+			)
+		);
+		
+		setCurrentFriend(null);
+	};
+
+	const friendsList = (
+		<FriendsList
+			friends={friends}
+			currentFriend={currentFriend}
+			onSelect={handleSelectFriend}
+		/>
+	);
+
 	const friendsForm = (
 		<FormAddFriends
-			setFriends={setFriends}
-			setIsOpenFriendForm={setIsOpenFriendForm}
+			onAddFriend={handleAddFriend}
 		/>
 	);
 
 	const billForm = (
 		<FormSplitBill
-			friends={friends}
-			currentFriendId={currentFriendId}
-			setCurrentFriendId={setCurrentFriendId}
-			setFriends={setFriends}
+			currentFriend={currentFriend}
+			onSplitBill={handleSplitBill}
 		/>
+	);
+
+	const buttonElement = (
+		<Button 
+			onClick={handleOpenAddForm}
+		>
+			{isOpenFriendForm ? "Закрыть форму" : "Добавить друга"}
+		</Button>
 	);
 
 	return (
 		<div className="app">
 			<div className="sidebar">
-				<FriendsList
-					friends={friends}
-					currentFriendId={currentFriendId}
-					setCurrentFriendId={setCurrentFriendId}
-				/>
+				{friendsList}
 				{isOpenFriendForm && friendsForm}
-				<Button 
-					onClick={handleOpenAddFriendForm}
-				>
-					{isOpenFriendForm ? "Закрыть форму" : "Добавить друга"}
-				</Button>
+				{buttonElement}
 			</div>
-			{currentFriendId && billForm}
+			{currentFriend && billForm}
 		</div>
 	);
 };

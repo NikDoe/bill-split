@@ -1,23 +1,23 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import Button from "./Button";
 import { TFriend } from "../App";
 
 type FriendItemProps = {
     friend: TFriend;
-	currentFriendId: number | null;
-	setCurrentFriendId: Dispatch<SetStateAction<null | number>>;
+	currentFriend: null | TFriend;
+	onSelect: (friend: TFriend) => void;
 }
 
 const FriendItem: FC<FriendItemProps> = function (props) {
 	const {
 		friend,
-		currentFriendId,
-		setCurrentFriendId,
+		currentFriend,
+		onSelect,
 	} = props;
 
 	const { id, balance, image, name } = friend;
 
-	const isSelect = currentFriendId === id;
+	const isSelect = currentFriend?.id === id;
 
 	const evenBalance = `Ты и  ${name} квиты`;
 	const negativeBalance = `Ты должен ${name} ${Math.abs(balance)}💲`;
@@ -25,10 +25,6 @@ const FriendItem: FC<FriendItemProps> = function (props) {
 
 	const balanceClasses = `${balance < 0 ? "red" : balance > 0 ? "green" : ""}`;
 	const liElemClasses = `${isSelect ? "selected" : ""}`;
-
-	const handleClick = () => {
-		setCurrentFriendId(isSelect ? null : id);
-	};
 
 	const balanceElement = (
 		<p className={balanceClasses}>
@@ -44,7 +40,7 @@ const FriendItem: FC<FriendItemProps> = function (props) {
 			<h3>{name}</h3>
 			{balanceElement}
 			<Button
-				onClick={handleClick}
+				onClick={() => onSelect(friend)}
 			>
 				{isSelect ? "Закрыть" : "Выбрать"}
 			</Button>

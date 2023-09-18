@@ -1,13 +1,11 @@
-import { ChangeEvent, Dispatch, FC, FormEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import Button from "./Button";
 import Form from "./Form";
 import { TFriend } from "../App";
 
 type FormSplitBillProps = {
-	friends: TFriend[];
-	currentFriendId: null | number;
-	setCurrentFriendId: Dispatch<SetStateAction<null | number>>;
-	setFriends: Dispatch<SetStateAction<TFriend[]>>;
+	currentFriend: null | TFriend;
+	onSplitBill: (friendExpense: number) => void;
 }
 
 const initialFormData = {
@@ -18,16 +16,11 @@ const initialFormData = {
 
 const FormSplitBill: FC<FormSplitBillProps> = function (props) {
 	const {
-		friends,
-		setFriends,
-		currentFriendId,
-		setCurrentFriendId,
+		currentFriend,
+		onSplitBill
 	} = props;
 
 	const [formData, setFormData] = useState(initialFormData);
-
-	const seletedFriend = friends.find(friend => friend.id === currentFriendId);
-
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 		const { name, value } = e.target;
@@ -42,23 +35,12 @@ const FormSplitBill: FC<FormSplitBillProps> = function (props) {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		const updatedFriendsList = friends.slice();
-
-		const index = updatedFriendsList.findIndex(friend => friend.id === currentFriendId);
-
-		const updatedBalance = formData.whoPays === 0 ? friendExpense : -friendExpense;
-
-		if(index !== -1) {
-			updatedFriendsList[index] = { ...updatedFriendsList[index], balance: updatedBalance };
-			setFriends(updatedFriendsList);
-		}
-		
-		setCurrentFriendId(null);
+		onSplitBill(formData.whoPays === 0 ? friendExpense: -friendExpense);
 	};
 
 	const formContent = (
 		<>
-			<h2>разделение счёта с {seletedFriend?.name}</h2>
+			<h2>разделение счёта с {currentFriend?.name}</h2>
 			<label>💵 Счёт </label>
 			<input
 				type="text"
@@ -73,7 +55,7 @@ const FormSplitBill: FC<FormSplitBillProps> = function (props) {
 				value={formData.myExpense}
 				onChange={handleInputChange}
 			/>
-			<label>👽 взнос {seletedFriend?.name}</label>
+			<label>👽 взнос {currentFriend?.name}</label>
 			<input
 				type="text"
 				name="friendExpense"
@@ -87,7 +69,7 @@ const FormSplitBill: FC<FormSplitBillProps> = function (props) {
 				onChange={handleInputChange}
 			>
 				<option value={0}>Я</option>
-				<option value={1}>{seletedFriend?.name}</option>
+				<option value={1}>{currentFriend?.name}</option>
 			</select>
 			<Button>
 				Разделить счёт
