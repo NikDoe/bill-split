@@ -1,17 +1,19 @@
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import FriendItem from "./FriendItem";
 import { TFriend } from "../App";
 
 type FriendsListProps = {
     friends: TFriend[];
+	currentFriendId: null | number;
+	setCurrentFriendId: Dispatch<SetStateAction<null | number>>;
 }
 
 const FriendsList: FC<FriendsListProps> = function (props) {
 	const {
-		friends
+		friends,
+		currentFriendId,
+		setCurrentFriendId,
 	} = props;
-
-	const [currentFriendId, setCurrentFriendId] = useState<null | number>(null);
 
 	return (
 		<ul>

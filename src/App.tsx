@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "./components/Button";
 import FriendsList from "./components/FriendsList";
 import FormAddFriends from "./components/FormAddFriends";
+import FormSplitBill from "./components/FormSplitBill";
 
 const initialFriends = [
 	{
@@ -29,6 +30,7 @@ export type TFriend = typeof initialFriends[number];
 const App = function () {
 	const [friends, setFriends] = useState<TFriend[]>(initialFriends);
 	const [isOpenFriendForm, setIsOpenFriendForm] = useState(false);
+	const [currentFriendId, setCurrentFriendId] = useState<null | number>(null);
 
 	const handleOpenAddFriendForm = () => {
 		setIsOpenFriendForm(prevState => !prevState);
@@ -41,11 +43,22 @@ const App = function () {
 		/>
 	);
 
+	const billForm = (
+		<FormSplitBill
+			friends={friends}
+			currentFriendId={currentFriendId}
+			setCurrentFriendId={setCurrentFriendId}
+			setFriends={setFriends}
+		/>
+	);
+
 	return (
 		<div className="app">
 			<div className="sidebar">
 				<FriendsList
-					friends={friends} 
+					friends={friends}
+					currentFriendId={currentFriendId}
+					setCurrentFriendId={setCurrentFriendId}
 				/>
 				{isOpenFriendForm && friendsForm}
 				<Button 
@@ -54,6 +67,7 @@ const App = function () {
 					{isOpenFriendForm ? "Закрыть форму" : "Добавить друга"}
 				</Button>
 			</div>
+			{currentFriendId && billForm}
 		</div>
 	);
 };

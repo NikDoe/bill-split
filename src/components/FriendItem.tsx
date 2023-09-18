@@ -1,18 +1,18 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import { TFriend } from "./FriendsList";
 import Button from "./Button";
+import { TFriend } from "../App";
 
 type FriendItemProps = {
     friend: TFriend;
 	currentFriendId: number | null;
-	setCurrentFriendId: Dispatch<SetStateAction<null | number>>
+	setCurrentFriendId: Dispatch<SetStateAction<null | number>>;
 }
 
 const FriendItem: FC<FriendItemProps> = function (props) {
 	const {
 		friend,
 		currentFriendId,
-		setCurrentFriendId
+		setCurrentFriendId,
 	} = props;
 
 	const { id, balance, image, name } = friend;
@@ -20,7 +20,7 @@ const FriendItem: FC<FriendItemProps> = function (props) {
 	const isSelect = currentFriendId === id;
 
 	const evenBalance = `Ты и  ${name} квиты`;
-	const negativeBalance = `Ты должен ${name} ${balance}💲`;
+	const negativeBalance = `Ты должен ${name} ${Math.abs(balance)}💲`;
 	const positiveBalance = `${name} должен тебе ${balance}💲`;
 
 	const balanceClasses = `${balance < 0 ? "red" : balance > 0 ? "green" : ""}`;
