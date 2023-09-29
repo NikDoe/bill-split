@@ -75,6 +75,7 @@ const App = function () {
 
 	const billForm = (
 		<FormSplitBill
+			key={currentFriend?.id}
 			currentFriend={currentFriend}
 			onSplitBill={handleSplitBill}
 		/>
